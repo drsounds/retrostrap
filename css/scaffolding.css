@@ -1,0 +1,139 @@
+/* ==========================================================================
+   SCAFFOLDING: grid, containers, structural layout, links, focus
+   (lib/scaffolding.less; the button base lives in patterns.css)
+   ========================================================================== */
+
+/* Grid: CSS-flexbox rows driven by --retro-grid-* tokens. The original
+   .row / .spanN / .offsetN class interface is unchanged. Columns are sized
+   from percentages so the grid stays fluid when the container shrinks. */
+
+.row {
+  --_cols: var(--retro-grid-columns);
+  --_col: calc(
+    (100% - var(--_cols) * var(--retro-grid-gutter)) / var(--_cols)
+  );
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin-left: calc(var(--retro-grid-gutter) * -1);
+
+  & :is(.span1, .span2, .span3, .span4, .span5, .span6, .span7, .span8,
+        .span9, .span10, .span11, .span12, .span13, .span14, .span15, .span16) {
+    flex: 0 0 auto;
+    box-sizing: content-box;
+    width: calc(
+      var(--_col) * var(--_span, 1) + var(--retro-grid-gutter) * (var(--_span, 1) - 1)
+    );
+    max-width: calc(100% - var(--retro-grid-gutter));
+    margin-left: var(--retro-grid-gutter);
+  }
+
+  & .span1  { --_span: 1; }
+  & .span2  { --_span: 2; }
+  & .span3  { --_span: 3; }
+  & .span4  { --_span: 4; }
+  & .span5  { --_span: 5; }
+  & .span6  { --_span: 6; }
+  & .span7  { --_span: 7; }
+  & .span8  { --_span: 8; }
+  & .span9  { --_span: 9; }
+  & .span10 { --_span: 10; }
+  & .span11 { --_span: 11; }
+  & .span12 { --_span: 12; }
+  & .span13 { --_span: 13; }
+  & .span14 { --_span: 14; }
+  & .span15 { --_span: 15; }
+  & .span16 { --_span: 16; }
+
+  /* Offsets skip N columns (N column widths + N gutters) and replace the
+     span's own leading gutter, exactly like the LESS .offset() mixin.
+     min() clamps the offset when the grid collapses to one column. */
+  & :is(.offset1, .offset2, .offset3, .offset4, .offset5, .offset6, .offset7,
+        .offset8, .offset9, .offset10, .offset11, .offset12, .offset13,
+        .offset14, .offset15) {
+    margin-left: calc(
+      (var(--_col) + var(--retro-grid-gutter)) *
+        min(var(--_offset, 0), var(--_cols) - 1) +
+      var(--retro-grid-gutter)
+    );
+  }
+
+  & .offset1  { --_offset: 1; }
+  & .offset2  { --_offset: 2; }
+  & .offset3  { --_offset: 3; }
+  & .offset4  { --_offset: 4; }
+  & .offset5  { --_offset: 5; }
+  & .offset6  { --_offset: 6; }
+  & .offset7  { --_offset: 7; }
+  & .offset8  { --_offset: 8; }
+  & .offset9  { --_offset: 9; }
+  & .offset10 { --_offset: 10; }
+  & .offset11 { --_offset: 11; }
+  & .offset12 { --_offset: 12; }
+  & .offset13 { --_offset: 13; }
+  & .offset14 { --_offset: 14; }
+  & .offset15 { --_offset: 15; }
+}
+
+/* Structural layout */
+html, body { background-color: var(--retro-bg); }
+
+body {
+  margin: 0;
+  font-family: var(--retro-font-sans);
+  font-size: var(--retro-font-base);
+  font-weight: normal;
+  line-height: var(--retro-baseline);
+  color: var(--retro-gray);
+  text-rendering: optimizeLegibility;
+}
+
+/* Centered, fixed-width layout that gives way to the viewport */
+.container {
+  display: flow-root;
+  width: var(--retro-site-width);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Fluid layout: sidebar + min/max-width content */
+.container-fluid {
+  display: grid;
+  grid-template-columns: var(--retro-sidebar-width) minmax(min(700px, 100%), 1180px);
+  column-gap: calc(var(--retro-grid-gutter));
+  justify-content: start;
+  align-items: start;
+  padding: 0 20px;
+  margin-bottom: var(--retro-baseline);
+
+  & .sidebar {
+    grid-column: 1;
+    width: var(--retro-sidebar-width);
+  }
+  & .content {
+    grid-column: 2;
+    min-width: 0;
+  }
+}
+
+.center-block { display: block; margin: 0 auto; }
+
+/* Links */
+a {
+  color: var(--retro-link-text);
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+
+  &:hover {
+    color: var(--retro-link-hover);
+    text-decoration: underline;
+  }
+}
+
+/* WCAG 2.2 focus indicator: visible for keyboard users, hidden for pointer.
+   :where() keeps specificity at zero so component rules can refine it. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--retro-focus-ring);
+  outline-offset: 2px;
+}

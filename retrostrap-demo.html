@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Retrostrap demo</title>
+  <script>
+    /* Apply the saved theme before first paint to avoid a flash */
+    try {
+      const html = document.documentElement;
+      const mode = localStorage.getItem('retro-mode');
+      const brand = localStorage.getItem('retro-brand');
+      if (mode === 'light' || mode === 'dark') html.dataset.theme = mode;
+      if (brand) { html.dataset.retroBrand = 'derived'; html.style.setProperty('--retro-primary', brand); }
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="retrostrap.css">
+  <style>
+    body { padding-top: 60px; }
+    .swatch { width: 60px; padding: 2px; height: 28px; cursor: pointer; }
+    .hex { font-family: var(--retro-font-mono); }
+    section { margin-bottom: 36px; }
+    .demo-row div[class*="span"] { background: color-mix(in srgb, var(--retro-primary) 14%, var(--retro-bg)); text-align: center; line-height: 24px; margin-bottom: 10px; }
+    .static { position: relative; top: auto; left: auto; transform: none; margin: 0 0 18px; }
+    .popover.static-pop { display: block; position: relative; width: 300px; margin-bottom: 18px; }
+    .twipsy.static-tip { position: relative; display: block; width: 140px; margin: 0 0 18px; }
+    .mode-group { display: inline-flex; }
+    .mode-group .btn { border-radius: 0; margin-left: -1px; }
+    .mode-group .btn:first-child { border-radius: 4px 0 0 4px; margin-left: 0; }
+    .mode-group .btn:last-child { border-radius: 0 4px 4px 0; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="fill">
+    <div class="container">
+      <h3><a href="#">Retrostrap</a></h3>
+      <ul class="primary-nav">
+        <li class="active"><a href="#typography">Typography</a></li>
+        <li><a href="#buttons">Buttons</a></li>
+        <li class="menu">
+          <a href="#" class="menu">Components</a>
+          <ul>
+            <li><a href="#forms">Forms</a></li>
+            <li><a href="#tables">Tables</a></li>
+            <li class="divider"></li>
+            <li><span>More</span></li>
+            <li><a href="#overlays">Overlays</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form action=""><input type="text" placeholder="Search"></form>
+      <ul class="secondary-nav">
+        <li><a href="#theme">Theme</a></li>
+        <li><a href="#" id="mode-toggle" role="button" aria-pressed="false">Dark</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="hero-unit">
+    <h1>Retrostrap</h1>
+    <p>Bootstrap 1.1.1, rebuilt as one raw CSS file. Custom properties, native nesting, color-mix().</p>
+    <p><a class="btn primary large" href="#">Learn more &raquo;</a></p>
+  </div>
+
+  <section id="theme">
+    <div class="page-header"><h1>Live theme <small>brand colour and light / dark mode</small></h1></div>
+    <div class="well">
+      <div class="clearfix">
+        <label for="t-brand">Brand primary</label>
+        <div class="input">
+          <input class="swatch" id="t-brand" type="color" value="#049cdb">
+          <span class="help-inline hex" id="t-brand-hex">#049cdb</span>
+          <button class="btn small" type="button" id="t-brand-reset">Reset</button>
+          <span class="help-block">Sets <code>--retro-primary</code> on <code>:root</code>; the gradient stops, links, focus glow and pagination follow.</span>
+        </div>
+      </div>
+      <div class="clearfix" style="margin-bottom:0">
+        <label>Colour mode</label>
+        <div class="input">
+          <span class="mode-group" role="group" aria-label="Colour mode">
+            <button class="btn" type="button" data-mode="auto">Auto</button>
+            <button class="btn" type="button" data-mode="light">Light</button>
+            <button class="btn" type="button" data-mode="dark">Dark</button>
+          </span>
+          <span class="help-inline" id="t-mode-note"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="grid">
+    <div class="page-header"><h1>Grid <small>16 columns</small></h1></div>
+    <div class="row demo-row">
+      <div class="span16">span16</div>
+    </div>
+    <div class="row demo-row">
+      <div class="span4">span4</div><div class="span12">span12</div>
+    </div>
+    <div class="row demo-row">
+      <div class="span2">2</div><div class="span2 offset3">2 offset3</div><div class="span4 offset5">4 offset5</div>
+    </div>
+    <div class="row demo-row">
+      <div class="span1">1</div><div class="span1">1</div><div class="span1">1</div><div class="span1">1</div>
+      <div class="span1">1</div><div class="span1">1</div><div class="span1">1</div><div class="span1">1</div>
+      <div class="span1">1</div><div class="span1">1</div><div class="span1">1</div><div class="span1">1</div>
+      <div class="span1">1</div><div class="span1">1</div><div class="span1">1</div><div class="span1">1</div>
+    </div>
+  </section>
+
+  <section id="typography">
+    <div class="page-header"><h1>Typography <small>Headings, text, code</small></h1></div>
+    <div class="row">
+      <div class="span8">
+        <h1>h1 Heading <small>small</small></h1>
+        <h2>h2 Heading <small>small</small></h2>
+        <h3>h3 Heading <small>small</small></h3>
+        <h4>h4 Heading <small>small</small></h4>
+        <h5>h5 Heading</h5>
+        <h6>h6 Heading</h6>
+      </div>
+      <div class="span8">
+        <p>Body text with a <a href="#">link</a>, <strong>strong</strong> and <em>emphasis</em>. <small>Small text.</small></p>
+        <blockquote><p>Design is not just what it looks like. Design is how it works.</p><small>Somebody famous</small></blockquote>
+        <p>Inline <code>code</code> sample.</p>
+        <pre>function retro() {
+  return "pre block";
+}</pre>
+        <ul><li>One</li><li>Two<ul><li>Nested</li></ul></li></ul>
+        <dl><dt>Term</dt><dd>Definition</dd></dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="buttons">
+    <div class="page-header"><h1>Buttons</h1></div>
+    <p>
+      <button class="btn" type="button">Default</button>
+      <button class="btn btn-secondary" type="button">Secondary</button>
+      <button class="btn primary" type="button">Primary</button>
+      <button class="btn btn-primary" type="button">btn-primary</button>
+      <button class="btn success" type="button">Success</button>
+      <button class="btn danger" type="button">Danger</button>
+      <button class="btn info" type="button">Info</button>
+    </p>
+    <p>
+      <button class="btn large primary" type="button">Large</button>
+      <button class="btn small" type="button">Small</button>
+      <button class="btn active" type="button">.active</button>
+      <button class="btn disabled" type="button">.disabled</button>
+      <button class="btn primary" type="button" disabled>:disabled</button>
+      <a class="btn" href="#">Link btn</a>
+    </p>
+  </section>
+
+  <section id="forms">
+    <div class="page-header"><h1>Forms</h1></div>
+    <form>
+      <fieldset>
+        <legend>Example form</legend>
+        <div class="clearfix"><label for="x1">Text</label><div class="input"><input id="x1" class="xlarge" type="text" placeholder="Placeholder"></div></div>
+        <div class="clearfix"><label for="x2">Prepend</label><div class="input"><div class="input-prepend"><span class="add-on">@</span><input id="x2" class="medium" type="text"></div></div></div>
+        <div class="clearfix"><label for="x3">Append</label><div class="input"><div class="input-append"><input id="x3" class="medium" type="text"><span class="add-on">.00</span></div></div></div>
+        <div class="clearfix"><label for="x4">Select</label><div class="input"><select id="x4"><option>One</option><option>Two</option></select></div></div>
+        <div class="clearfix"><label for="x5">Textarea</label><div class="input"><textarea id="x5" class="xlarge" rows="3"></textarea></div></div>
+        <div class="clearfix"><label for="x6">Uneditable</label><div class="input"><span class="uneditable-input">Read only value</span></div></div>
+        <div class="clearfix"><label for="x7">Disabled</label><div class="input"><input id="x7" type="text" disabled value="Disabled"></div></div>
+        <div class="clearfix error"><label for="x8">Error</label><div class="input"><input id="x8" type="text" value="Bad"><span class="help-inline">Something is wrong</span></div></div>
+        <div class="clearfix"><label>Options</label><div class="input"><ul class="inputs-list">
+          <li><label><input type="checkbox" checked> <span>Checkbox one</span></label></li>
+          <li><label><input type="radio" name="r" checked> <span>Radio one</span></label></li>
+          <li><label><input type="radio" name="r"> <span>Radio two</span></label></li>
+        </ul></div></div>
+      </fieldset>
+      <div class="actions"><button class="btn primary" type="submit">Save</button>&nbsp;<button class="btn" type="reset">Cancel</button></div>
+    </form>
+  </section>
+
+  <section id="tables">
+    <div class="page-header"><h1>Tables</h1></div>
+    <table class="zebra-striped">
+      <thead><tr><th class="header blue">#</th><th class="header headerSortUp green">Name</th><th class="header headerSortDown red">Role</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Mark</td><td>Dev</td></tr>
+        <tr><td>2</td><td>Jacob</td><td>Design</td></tr>
+        <tr><td>3</td><td>Larry</td><td>Ops</td></tr>
+      </tbody>
+    </table>
+    <table class="bordered-table condensed-table">
+      <thead><tr><th>#</th><th>Name</th><th>Role</th></tr></thead>
+      <tbody><tr><td>1</td><td>Mark</td><td>Dev</td></tr><tr><td>2</td><td>Jacob</td><td>Design</td></tr></tbody>
+    </table>
+  </section>
+
+  <section id="navigation">
+    <div class="page-header"><h1>Navigation</h1></div>
+    <ul class="tabs"><li class="active"><a href="#">Home</a></li><li><a href="#">Profile</a></li><li><a href="#">Messages</a></li></ul>
+    <ul class="pills"><li class="active"><a href="#">Home</a></li><li><a href="#">Profile</a></li><li><a href="#">Messages</a></li></ul>
+    <div class="pagination"><ul>
+      <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+      <li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li>
+      <li class="next"><a href="#">Next &rarr;</a></li>
+    </ul></div>
+  </section>
+
+  <section id="feedback">
+    <div class="page-header"><h1>Feedback</h1></div>
+    <div class="alert-message warning"><a class="close" href="#">&times;</a><p><strong>Warning!</strong> Best check yo self.</p></div>
+    <div class="alert-message danger"><a class="close" href="#">&times;</a><p><strong>Oh snap!</strong> Change a few things.</p></div>
+    <div class="alert-message success"><a class="close" href="#">&times;</a><p><strong>Well done!</strong> You did it.</p></div>
+    <div class="alert-message info"><a class="close" href="#">&times;</a><p><strong>Heads up!</strong> This is info.</p></div>
+    <div class="alert-message block-message error"><a class="close" href="#">&times;</a><p><strong>Block error.</strong> Tinted panel.</p><div class="alert-actions"><a class="btn small" href="#">Take this action</a></div></div>
+    <p>
+      <span class="label">Default</span> <span class="label success">Success</span> <span class="label warning">Warning</span>
+      <span class="label important">Important</span> <span class="label notice">Notice</span>
+      <span class="badge">1</span> <span class="badge success">22</span> <span class="badge important">333</span>
+    </p>
+  </section>
+
+  <section id="overlays">
+    <div class="page-header"><h1>Overlays</h1></div>
+    <div class="modal static">
+      <div class="modal-header"><h3>Modal title</h3><a href="#" class="close">&times;</a></div>
+      <div class="modal-body"><p>One fine body&hellip;</p></div>
+      <div class="modal-footer"><a href="#" class="btn primary">Save</a><a href="#" class="btn secondary">Close</a></div>
+    </div>
+    <p>
+      <button class="btn" type="button" id="open-dialog">Open dialog.modal</button>
+    </p>
+    <div class="twipsy static-tip below"><div class="twipsy-arrow"></div><div class="twipsy-inner">Twipsy tooltip</div></div>
+    <div class="popover static-pop right"><div class="arrow"></div><div class="inner"><h3 class="title">Popover</h3><div class="content"><p>Popover content.</p></div></div></div>
+    <dialog class="modal" id="dlg">
+      <div class="modal-header"><h3>Native dialog</h3></div>
+      <div class="modal-body"><p>Backdrop is ::backdrop.</p></div>
+      <div class="modal-footer"><button class="btn primary" type="button" id="close-dialog">OK</button></div>
+    </dialog>
+  </section>
+
+  <footer><p>&copy; Retrostrap 2026 &mdash; ported from Bootstrap 1.1.1 (Apache-2.0)</p></footer>
+</div>
+
+<script>
+  const html = document.documentElement;
+  const DEFAULT_BRAND = '#049cdb';
+  const dark = matchMedia('(prefers-color-scheme: dark)');
+  const store = {
+    get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
+  };
+
+  /* Colour mode: 'auto' (no attribute, follows the OS), 'light' or 'dark' */
+  const modeButtons = document.querySelectorAll('[data-mode]');
+  const toggle = document.getElementById('mode-toggle');
+  const note = document.getElementById('t-mode-note');
+  const effective = () => html.dataset.theme || (dark.matches ? 'dark' : 'light');
+
+  function syncMode() {
+    const current = html.dataset.theme || 'auto';
+    modeButtons.forEach(b => {
+      const on = b.dataset.mode === current;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on);
+    });
+    toggle.textContent = effective() === 'dark' ? 'Light' : 'Dark';
+    toggle.setAttribute('aria-pressed', effective() === 'dark');
+    note.textContent = 'Showing ' + effective() + (current === 'auto' ? ' (system)' : '');
+  }
+  function setMode(mode) {
+    if (mode === 'auto') delete html.dataset.theme; else html.dataset.theme = mode;
+    store.set('retro-mode', mode === 'auto' ? null : mode);
+    syncMode();
+  }
+  modeButtons.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  toggle.addEventListener('click', e => { e.preventDefault(); setMode(effective() === 'dark' ? 'light' : 'dark'); });
+  dark.addEventListener('change', syncMode);
+
+  /* Brand colour: only --retro-primary is set; data-retro-brand="derived"
+     lets the CSS derive the dark stop, focus glow and link colour from it. */
+  const brand = document.getElementById('t-brand');
+  const brandHex = document.getElementById('t-brand-hex');
+  function setBrand(value) {
+    html.dataset.retroBrand = 'derived';
+    html.style.setProperty('--retro-primary', value);
+    brand.value = brandHex.textContent = value;
+    store.set('retro-brand', value);
+  }
+  brand.addEventListener('input', e => setBrand(e.target.value));
+  document.getElementById('t-brand-reset').addEventListener('click', () => {
+    delete html.dataset.retroBrand;
+    html.style.removeProperty('--retro-primary');
+    brand.value = brandHex.textContent = DEFAULT_BRAND;
+    store.set('retro-brand', null);
+  });
+  if (store.get('retro-brand')) setBrand(store.get('retro-brand'));
+  syncMode();
+
+  const dlg = document.getElementById('dlg');
+  document.getElementById('open-dialog').addEventListener('click', () => dlg.showModal());
+  document.getElementById('close-dialog').addEventListener('click', () => dlg.close());
+  document.querySelectorAll('.topbar li.menu > a').forEach(a => a.addEventListener('click', e => { e.preventDefault(); a.parentElement.classList.toggle('open'); }));
+</script>
+</body>
+</html>

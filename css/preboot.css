@@ -1,0 +1,217 @@
+/* ==========================================================================
+   PREBOOT: design tokens (the LESS variables from lib/preboot.less)
+   Every colour, font and metric is a --retro-* custom property on :root.
+   Derived values use relative color syntax and color-mix(), so changing a
+   base token at runtime re-themes everything.
+
+   LIGHT / DARK
+   Surfaces, text, lines and shadows are defined with light-dark(), so the
+   same tokens resolve differently per colour scheme:
+     - default:                 follows the OS (prefers-color-scheme)
+     - data-theme="light"       forces light (on <html> or any container)
+     - data-theme="dark"        forces dark  (on <html> or any container)
+   Setting a token inline on :root (e.g. --retro-primary) applies to both modes.
+   ========================================================================== */
+
+:root {
+  color-scheme: light dark;
+}
+[data-theme="light"] { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+
+/* A scoped theme (e.g. a dark panel on a light page) needs its own paint */
+[data-theme]:not(:root) {
+  background-color: var(--retro-bg);
+  color: var(--retro-gray);
+}
+
+:root {
+  /* Ink: fixed colours for text on coloured fills and for glyphs */
+  --retro-black: #000;
+  --retro-white: #fff;
+  /* Ink that flips with the scheme (close buttons, sort arrows) */
+  --retro-ink: light-dark(#000, #fff);
+
+  /* Neutrals. Light: lighten(#000, 25/50/75/90%) */
+  --retro-gray-dark: light-dark(color-mix(in srgb, var(--retro-black) 75%, var(--retro-white)), #eceef1);
+  --retro-gray: light-dark(color-mix(in srgb, var(--retro-black) 50%, var(--retro-white)), #b4b9c0);
+  --retro-gray-light: light-dark(color-mix(in srgb, var(--retro-black) 25%, var(--retro-white)), #7c828a);
+  --retro-gray-lighter: light-dark(color-mix(in srgb, var(--retro-black) 10%, var(--retro-white)), #3a3e44);
+
+  /* Surfaces */
+  --retro-bg: light-dark(#fff, #1a1c1f);
+  --retro-field-bg: light-dark(#fff, #23262a);
+  --retro-surface: light-dark(#f5f5f5, #2a2d32);
+  --retro-stripe: light-dark(#f9f9f9, #212428);
+
+  /* Hard-coded greys from the original source, named */
+  --retro-border: light-dark(#ccc, #4a4f57);
+  --retro-border-dark: light-dark(#bbb, #5a606a);
+  --retro-rule: light-dark(#ddd, #3a3e44);
+  --retro-rule-light: light-dark(#eee, #30343a);
+  --retro-text-btn: light-dark(#333, #e8eaed);
+
+  /* Translucent lines and bevels */
+  --retro-line: light-dark(rgb(0 0 0 / 0.15), rgb(255 255 255 / 0.14));
+  --retro-line-strong: light-dark(rgb(0 0 0 / 0.3), rgb(255 255 255 / 0.22));
+  --retro-line-faint: light-dark(rgb(0 0 0 / 0.05), rgb(255 255 255 / 0.07));
+  --retro-bevel: light-dark(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.06));
+  --retro-bevel-solid: light-dark(#fff, rgb(255 255 255 / 0.07));
+
+  /* Text "engraving": a white glow on light, a dark drop on dark */
+  --retro-glow: light-dark(rgb(255 255 255 / 0.75), rgb(0 0 0 / 0.6));
+  --retro-glow-solid: light-dark(#fff, rgb(0 0 0 / 0.6));
+  --retro-glow-soft: light-dark(rgb(255 255 255 / 0.5), rgb(0 0 0 / 0.5));
+
+  /* Links. --retro-link is the base; text and hover colours adapt to the scheme */
+  --retro-link: #0069d6;
+  --retro-link-dark: hsl(from var(--retro-link) h s calc(l - 10));
+  --retro-link-text: light-dark(var(--retro-link), hsl(from var(--retro-link) h s max(calc(l + 22), 62)));
+  --retro-link-hover: light-dark(
+    hsl(from var(--retro-link) h s calc(l - 10)),
+    hsl(from var(--retro-link) h s max(calc(l + 32), 74))
+  );
+
+  /* Accent palette */
+  --retro-blue: #049cdb;
+  --retro-blue-dark: #0064cd;
+  --retro-green: #46a546;
+  --retro-red: #9d261d;
+  --retro-yellow: #ffc40d;
+  --retro-orange: #f89406;
+  --retro-pink: #c3325f;
+  --retro-purple: #7a43b6;
+
+  /* Semantic colours: the two stops of the 2011 gradient bar */
+  --retro-primary: var(--retro-blue);
+  --retro-primary-dark: var(--retro-blue-dark);
+  --retro-success: #62c462;
+  --retro-success-dark: #57a957;
+  --retro-danger: #ee5f5b;
+  --retro-danger-dark: #c43c35;
+  --retro-info: #5bc0de;
+  --retro-info-dark: #339bb9;
+  --retro-warning: light-dark(#fceec1, #6e5a1d);
+  --retro-warning-dark: light-dark(#eedc94, #574716);
+
+  /* Base tints used by block messages (the original used slightly different seeds) */
+  --retro-danger-soft: #f56a66;
+  --retro-info-soft: #6bd0ee;
+
+  /* Block messages: pale tints on light, deep tints on dark */
+  --retro-block-warning-bg: light-dark(hsl(from var(--retro-warning) h s calc(l + 5)), hsl(from var(--retro-warning) h s calc(l - 6)));
+  --retro-block-danger-bg: light-dark(hsl(from var(--retro-danger-soft) h s calc(l + 25)), hsl(from var(--retro-danger-soft) h calc(s - 35) calc(l - 40)));
+  --retro-block-danger-border: light-dark(hsl(from var(--retro-danger-soft) h s calc(l + 20)), hsl(from var(--retro-danger-soft) h calc(s - 30) calc(l - 30)));
+  --retro-block-success-bg: light-dark(hsl(from var(--retro-success) h s calc(l + 30)), hsl(from var(--retro-success) h calc(s - 25) calc(l - 35)));
+  --retro-block-success-border: light-dark(hsl(from var(--retro-success) h s calc(l + 25)), hsl(from var(--retro-success) h calc(s - 20) calc(l - 28)));
+  --retro-block-info-bg: light-dark(hsl(from var(--retro-info-soft) h s calc(l + 25)), hsl(from var(--retro-info-soft) h calc(s - 35) calc(l - 40)));
+  --retro-block-info-border: light-dark(hsl(from var(--retro-info-soft) h s calc(l + 20)), hsl(from var(--retro-info-soft) h calc(s - 30) calc(l - 30)));
+
+  /* Default ("secondary") button: white-to-grey bevel on light, slate on dark */
+  --retro-btn-top: light-dark(var(--retro-white), #4b4f56);
+  --retro-btn-bottom: hsl(from var(--retro-btn-top) h s calc(l - 10));
+  --retro-btn-border: light-dark(#ccc, #101214);
+  --retro-btn-border-bottom: light-dark(#bbb, #08090a);
+  --retro-secondary: var(--retro-btn-top);
+  --retro-secondary-dark: hsl(from var(--retro-secondary) h s calc(l - 10));
+
+  /* Focus */
+  --retro-focus: #52a8ec;
+  --retro-focus-ring: light-dark(var(--retro-primary-dark), var(--retro-primary));
+
+  /* Form error shades */
+  --retro-error-fg: light-dark(var(--retro-red), hsl(from var(--retro-red) h s calc(l + 30)));
+  --retro-error-bg: light-dark(hsl(from var(--retro-red) h s calc(l + 57)), hsl(from var(--retro-red) h s calc(l - 22)));
+  --retro-error-bg-addon: light-dark(hsl(from var(--retro-red) h s calc(l + 50)), hsl(from var(--retro-red) h s calc(l - 14)));
+  --retro-error-text: hsl(from var(--retro-red) h calc(s - 25) calc(l + 25));
+  --retro-error-text-dark: light-dark(
+    hsl(from var(--retro-red) h calc(s - 25) calc(l + 15)),
+    hsl(from var(--retro-red) h calc(s - 25) calc(l + 30))
+  );
+
+  /* Code */
+  --retro-code-bg: light-dark(hsl(from var(--retro-orange) h s calc(l + 40)), hsl(from var(--retro-orange) h s calc(l - 30)));
+  --retro-code-fg: light-dark(rgb(0 0 0 / 0.75), rgb(255 255 255 / 0.85));
+
+  /* Pagination hover/active segment */
+  --retro-pager-bg: light-dark(hsl(from var(--retro-blue) h s calc(l + 45)), hsl(from var(--retro-blue) h s calc(l - 22)));
+
+  /* Colour scheme helpers (spin()) for theme authors */
+  --retro-base-color: var(--retro-blue);
+  --retro-complement: hsl(from var(--retro-base-color) calc(h + 180) s l);
+  --retro-split1: hsl(from var(--retro-base-color) calc(h + 158) s l);
+  --retro-split2: hsl(from var(--retro-base-color) calc(h - 158) s l);
+  --retro-triad1: hsl(from var(--retro-base-color) calc(h + 135) s l);
+  --retro-triad2: hsl(from var(--retro-base-color) calc(h - 135) s l);
+  --retro-tetra1: hsl(from var(--retro-base-color) calc(h + 90) s l);
+  --retro-tetra2: hsl(from var(--retro-base-color) calc(h - 90) s l);
+  --retro-analog1: hsl(from var(--retro-base-color) calc(h + 22) s l);
+  --retro-analog2: hsl(from var(--retro-base-color) calc(h - 22) s l);
+
+  /* Topbar: stays a dark bar in both schemes, a touch deeper in dark mode */
+  --retro-topbar-top: light-dark(#333, #2b2e32);
+  --retro-topbar-bottom: light-dark(#222, #18191c);
+  --retro-topbar-text: #bfbfbf;
+  --retro-topbar-placeholder: #e6e6e6;
+  --retro-topbar-menu-text: #bbb;
+  --retro-topbar-section: #808080;
+  --retro-topbar-focus-bg: #fff;
+  --retro-topbar-focus-text: #404040;
+  --retro-topbar-height: 40px;
+
+  /* Tooltips invert against the page: black on light, pale on dark */
+  --retro-tip-bg: light-dark(#000, #e8eaed);
+  --retro-tip-text: light-dark(#fff, #14161a);
+
+  /* Typography */
+  --retro-font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --retro-font-serif: Georgia, "Times New Roman", Times, serif;
+  --retro-font-mono: Monaco, "Andale Mono", "Courier New", monospace;
+  --retro-font-base: 13px;
+  --retro-baseline: 18px;
+
+  /* Radii */
+  --retro-radius: 4px;
+  --retro-radius-sm: 3px;
+  --retro-radius-lg: 6px;
+
+  /* Shadows */
+  --retro-inset: light-dark(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.45));
+  --retro-inset-soft: light-dark(rgb(0 0 0 / 0.075), rgb(0 0 0 / 0.4));
+  --retro-inset-faint: light-dark(rgb(0 0 0 / 0.05), rgb(0 0 0 / 0.3));
+  --retro-shadow-color: light-dark(rgb(0 0 0 / 0.3), rgb(0 0 0 / 0.6));
+  --retro-shadow-input: inset 0 1px 3px var(--retro-inset);
+  --retro-shadow-uneditable: inset 0 1px 2px var(--retro-inset-soft);
+  --retro-shadow-pop: 0 3px 7px var(--retro-shadow-color);
+  --retro-backdrop: light-dark(rgb(0 0 0 / 0.5), rgb(0 0 0 / 0.7));
+
+  /* Grid: 16 columns x 40px + 15 gutters x 20px = 940px */
+  --retro-grid-columns: 16;
+  --retro-grid-column: 40px;
+  --retro-grid-gutter: 20px;
+  --retro-extra-space: 40px;
+  --retro-site-width: calc(
+    var(--retro-grid-columns) * var(--retro-grid-column) +
+    (var(--retro-grid-columns) - 1) * var(--retro-grid-gutter)
+  );
+  --retro-sidebar-width: 220px;
+
+  /* Stacking */
+  --retro-z-backdrop: 1000;
+  --retro-z-modal: 2000;
+  --retro-z-topbar: 10000;
+}
+
+/* BRAND: opt-in, derive the whole blue family from --retro-primary alone.
+   Add data-retro-brand="derived" to <html>, then set --retro-primary to any
+   colour. The hue/saturation/lightness offsets are the ones that map the
+   original #049cdb to #0064cd (dark stop) and #52a8ec (focus glow). */
+[data-retro-brand="derived"] {
+  --retro-primary-dark: hsl(from var(--retro-primary) calc(h + 13) calc(s + 4) calc(l - 4));
+  --retro-focus: hsl(from var(--retro-primary) calc(h + 10) calc(s - 14) calc(l + 18));
+  --retro-link: var(--retro-primary-dark);
+  --retro-pager-bg: light-dark(
+    hsl(from var(--retro-primary) h s calc(l + 45)),
+    hsl(from var(--retro-primary) h s calc(l - 22))
+  );
+}

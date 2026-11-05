@@ -1,0 +1,344 @@
+/* ==========================================================================
+   FORMS: inputs, selects, textareas, add-ons, states (lib/forms.less)
+   ========================================================================== */
+
+form { margin-bottom: var(--retro-baseline); }
+
+fieldset {
+  margin-bottom: var(--retro-baseline);
+  padding-top: var(--retro-baseline);
+
+  & legend {
+    display: block;
+    margin-left: 150px;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--retro-gray-dark);
+  }
+}
+
+/* Row wrapper that contains the floated label */
+.clearfix {
+  display: flow-root;
+  margin-bottom: var(--retro-baseline);
+}
+
+label, input, select, textarea {
+  font-family: var(--retro-font-sans);
+  font-size: var(--retro-font-base);
+  font-weight: normal;
+  line-height: normal;
+}
+
+label {
+  padding-top: 6px;
+  font-size: var(--retro-font-base);
+  line-height: 18px;
+  float: left;
+  width: 130px;
+  text-align: right;
+  color: var(--retro-gray-dark);
+}
+
+div.input { margin-left: 150px; }
+
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+  accent-color: var(--retro-primary);
+}
+
+/* Text-like controls (the original text/password plus modern HTML5 types).
+   :where() keeps these base rules at zero specificity, so the later
+   select/textarea/size/state rules override them as intended. */
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"],
+    input[type="url"], input[type="search"], input[type="tel"], input[type="number"],
+    input[type="date"], input[type="datetime-local"], input[type="month"],
+    input[type="time"], input[type="week"], textarea, select, .uneditable-input) {
+  display: inline-block;
+  width: 210px;
+  padding: 4px;
+  font-size: var(--retro-font-base);
+  line-height: var(--retro-baseline);
+  height: var(--retro-baseline);
+  color: var(--retro-gray);
+  background-color: var(--retro-field-bg);
+  border: 1px solid var(--retro-border);
+  border-radius: var(--retro-radius-sm);
+}
+select, input[type="file"] {
+  height: calc(var(--retro-baseline) * 1.5);
+  line-height: calc(var(--retro-baseline) * 1.5);
+}
+textarea { height: auto; }
+
+.uneditable-input {
+  background-color: var(--retro-rule-light);
+  display: block;
+  border-color: var(--retro-border);
+  box-shadow: var(--retro-shadow-uneditable);
+}
+
+::placeholder {
+  color: var(--retro-gray-light);
+  opacity: 1;
+}
+
+/* Inset field + animated focus glow */
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"],
+    input[type="url"], input[type="search"], input[type="tel"], input[type="number"],
+    input[type="date"], input[type="datetime-local"], input[type="month"],
+    input[type="time"], input[type="week"], select, textarea) {
+  transition: border linear 0.2s, box-shadow linear 0.2s;
+  box-shadow: var(--retro-shadow-input);
+}
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"],
+    input[type="url"], input[type="search"], input[type="tel"], input[type="number"],
+    input[type="date"], input[type="datetime-local"], input[type="month"],
+    input[type="time"], input[type="week"], textarea):focus {
+  /* The glow replaces the outline; a transparent outline keeps a visible
+     indicator in forced-colors / Windows High Contrast mode. */
+  outline: 2px solid transparent;
+  border-color: color-mix(in srgb, var(--retro-focus) 80%, transparent);
+  box-shadow: var(--retro-shadow-input),
+              0 0 8px color-mix(in srgb, var(--retro-focus) 60%, transparent);
+}
+select:focus-visible {
+  outline: 2px solid var(--retro-focus-ring);
+  outline-offset: 1px;
+}
+
+/* Error state */
+form div.error {
+  background: var(--retro-error-bg);
+  padding: 10px 0;
+  margin: -10px 0 10px;
+  border-radius: var(--retro-radius);
+
+  & > label,
+  & span.help-inline,
+  & span.help-block {
+    color: var(--retro-error-fg);
+  }
+
+  & :is(input:not([type]), input[type="text"], input[type="password"], input[type="email"],
+        input[type="url"], input[type="search"], input[type="tel"], input[type="number"],
+        textarea) {
+    border-color: var(--retro-error-text);
+    box-shadow: 0 0 3px hsl(from var(--retro-red) h s calc(l + 4) / 0.25);
+
+    &:focus {
+      border-color: var(--retro-error-text-dark);
+      box-shadow: 0 0 6px hsl(from var(--retro-red) h s calc(l + 4) / 0.5);
+    }
+  }
+
+  & :is(.input-prepend, .input-append) span.add-on {
+    background: var(--retro-error-bg-addon);
+    border-color: var(--retro-error-text);
+    color: var(--retro-error-text-dark);
+  }
+}
+
+/* Sizes */
+.input-mini, input.mini, textarea.mini, select.mini { width: 60px; }
+.input-small, input.small, textarea.small, select.small { width: 90px; }
+.input-medium, input.medium, textarea.medium, select.medium { width: 150px; }
+.input-large, input.large, textarea.large, select.large { width: 210px; }
+.input-xlarge, input.xlarge, textarea.xlarge, select.xlarge { width: 270px; }
+.input-xxlarge, input.xxlarge, textarea.xxlarge, select.xxlarge { width: 530px; }
+textarea.xxlarge { overflow-y: scroll; }
+
+/* Read-only and disabled controls: flat, no inset, no glow */
+input[readonly]:focus,
+textarea[readonly]:focus,
+input.disabled,
+:is(input, textarea, select):disabled {
+  background: var(--retro-surface);
+  border-color: var(--retro-rule);
+  box-shadow: none;
+}
+:is(input, textarea, select):disabled {
+  cursor: not-allowed;
+  color: var(--retro-gray-light);
+}
+:is(input[type="checkbox"], input[type="radio"]):disabled { cursor: not-allowed; }
+
+/* Actions bar (the buttons) */
+.actions {
+  background: var(--retro-surface);
+  margin-top: var(--retro-baseline);
+  margin-bottom: var(--retro-baseline);
+  padding: calc(var(--retro-baseline) - 1px) 20px var(--retro-baseline) 150px;
+  border-top: 1px solid var(--retro-rule);
+  border-radius: 0 0 var(--retro-radius-sm) var(--retro-radius-sm);
+
+  & .secondary-action {
+    float: right;
+
+    & a {
+      line-height: 30px;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
+
+/* Help text */
+.help-inline, .help-block {
+  font-size: 12px;
+  line-height: var(--retro-baseline);
+  color: var(--retro-gray-light);
+}
+.help-inline { padding-left: 5px; }
+.help-block {
+  display: block;
+  max-width: 600px;
+}
+
+/* Inline fields */
+.inline-inputs {
+  color: var(--retro-gray);
+
+  & span, & input[type="text"] { display: inline-block; }
+  & input.mini { width: 60px; }
+  & input.small { width: 90px; }
+  & span { padding: 0 2px 0 1px; }
+}
+
+/* Add-ons: symbols and text attached to an input (one segmented control) */
+.input-prepend,
+.input-append {
+  display: flex;
+  align-items: flex-start;
+
+  & input[type="text"],
+  & input[type="password"],
+  & input[type="email"],
+  & input[type="url"],
+  & input[type="search"],
+  & input[type="number"] {
+    flex: 0 1 auto;
+    border-radius: 0 var(--retro-radius-sm) var(--retro-radius-sm) 0;
+  }
+
+  & .add-on {
+    flex: none;
+    display: block;
+    width: auto;
+    min-width: 16px;
+    padding: 4px 4px 4px 5px;
+    background: var(--retro-surface);
+    color: var(--retro-gray-light);
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    text-align: center;
+    text-shadow: 0 1px 0 var(--retro-glow-solid);
+    border: 1px solid var(--retro-border);
+    border-right-width: 0;
+    border-radius: var(--retro-radius-sm) 0 0 var(--retro-radius-sm);
+  }
+
+  & .active {
+    background: hsl(from var(--retro-green) h s calc(l + 30));
+    border-color: var(--retro-green);
+  }
+}
+.input-append {
+  & input[type="text"],
+  & input[type="password"],
+  & input[type="email"],
+  & input[type="url"],
+  & input[type="search"],
+  & input[type="number"] {
+    border-radius: var(--retro-radius-sm) 0 0 var(--retro-radius-sm);
+  }
+  & .add-on {
+    border-radius: 0 var(--retro-radius-sm) var(--retro-radius-sm) 0;
+    border-right-width: 1px;
+    border-left-width: 0;
+  }
+}
+
+/* Stacked radios and checkboxes */
+.inputs-list {
+  margin: 0 0 5px;
+  width: 100%;
+
+  & li {
+    display: block;
+    padding: 0;
+    width: 100%;
+
+    & label {
+      display: block;
+      float: none;
+      width: auto;
+      padding: 0;
+      line-height: var(--retro-baseline);
+      text-align: left;
+      white-space: normal;
+
+      & strong { color: var(--retro-gray); }
+      & small {
+        font-size: 12px;
+        font-weight: normal;
+      }
+    }
+    & ul.inputs-list {
+      margin-left: 25px;
+      margin-bottom: 10px;
+      padding-top: 0;
+    }
+    &:first-child { padding-top: 5px; }
+  }
+
+  & input[type="radio"],
+  & input[type="checkbox"] { margin-bottom: 0; }
+}
+
+/* Stacked forms */
+.form-stacked {
+  padding-left: 20px;
+
+  & fieldset { padding-top: calc(var(--retro-baseline) / 2); }
+  & legend { margin-left: 0; }
+  & label {
+    display: block;
+    float: none;
+    width: auto;
+    font-weight: bold;
+    text-align: left;
+    line-height: 20px;
+    padding-top: 0;
+  }
+  & .clearfix {
+    margin-bottom: calc(var(--retro-baseline) / 2);
+
+    & div.input { margin-left: 0; }
+  }
+  & .inputs-list {
+    margin-bottom: 0;
+
+    & li {
+      padding-top: 0;
+
+      & label {
+        font-weight: normal;
+        padding-top: 0;
+      }
+    }
+  }
+  & div.error {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    margin-top: 0;
+    margin-left: -10px;
+  }
+  & .actions {
+    margin-left: -20px;
+    padding-left: 20px;
+  }
+}

@@ -1,0 +1,158 @@
+/* ==========================================================================
+   RESPONSIVE & ACCESSIBILITY (new in Retrostrap; must load last)
+   ========================================================================== */
+
+/* Tablet and below: container gains side padding so the negative-margin row
+   still fits the viewport. */
+@media (max-width: 940px) {
+  .container {
+    box-sizing: border-box;
+    padding-inline: var(--retro-grid-gutter);
+  }
+
+  /* The content column's 700px minimum would overflow next to the sidebar */
+  .container-fluid {
+    grid-template-columns: var(--retro-sidebar-width) minmax(0, 1fr);
+  }
+
+  img, video, canvas, svg { max-width: 100%; }
+  img, video { height: auto; }
+  pre { overflow-x: auto; }
+
+  .input-xxlarge, input.xxlarge, textarea.xxlarge, select.xxlarge,
+  .input-xlarge, input.xlarge, textarea.xlarge, select.xlarge {
+    max-width: 100%;
+  }
+}
+
+/* Phone: the grid collapses to a single column (spans stack, offsets clamp
+   to zero through the min() in the offset rule). */
+@media (max-width: 767px) {
+  .row { --_cols: 1; }
+
+  .container-fluid {
+    display: block;
+
+    & .sidebar { width: auto; }
+    & .content { min-width: 0; }
+  }
+
+  .hero-unit {
+    padding: 30px;
+    margin-top: 30px;
+
+    & h1 { font-size: 40px; }
+  }
+
+  .modal {
+    width: auto;
+    min-width: 0;
+
+    & .modal-header,
+    & .modal-body,
+    & .modal-footer { padding-inline: 15px; }
+  }
+
+  /* Topbar: no longer fixed or fixed-height, so items wrap onto extra rows
+     instead of overflowing. Dropdowns anchor to their own menu item. */
+  .topbar, .navbar {
+    position: relative;
+    height: auto;
+
+    & .container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    & h3 a { margin-left: 0; }
+
+    & .container > ul {
+      display: flex;
+      flex-wrap: wrap;
+      float: none;
+      margin-right: 0;
+
+      &.secondary-nav { margin-left: auto; }
+    }
+
+    & .container > form {
+      float: none;
+      margin: 5px 10px;
+    }
+
+    & .container > ul li ul { top: 100%; }
+  }
+
+  /* Wide tables scroll sideways instead of stretching the page */
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .pagination {
+    height: auto;
+
+    & ul {
+      flex-wrap: wrap;
+      max-width: 100%;
+    }
+  }
+
+  .popover .inner { width: min(280px, 100vw - 40px); }
+
+  fieldset legend { margin-left: 0; }
+  .topbar form input,
+  .navbar form input { width: 120px; }
+  label {
+    float: none;
+    width: auto;
+    text-align: left;
+  }
+  div.input,
+  .actions { margin-left: 0; }
+  .actions { padding-left: 20px; }
+}
+
+/* Small phone */
+@media (max-width: 480px) {
+  .container { padding-inline: 10px; }
+  .container-fluid { padding-inline: 10px; }
+
+  h1 { font-size: 26px; }
+  h2 { font-size: 22px; }
+
+  .hero-unit {
+    padding: 20px;
+
+    & h1 { font-size: 32px; }
+    & p { font-size: 16px; }
+  }
+
+  /* Primary actions become full-width, easy-to-hit targets */
+  .actions .btn { margin-bottom: 5px; }
+  .modal .modal-footer .btn {
+    float: none;
+    display: block;
+    width: 100%;
+    margin: 0 0 5px;
+    box-sizing: border-box;
+  }
+
+  .topbar form,
+  .navbar form { flex: 1 1 100%; }
+  .topbar form input,
+  .navbar form input { width: 100%; box-sizing: border-box; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .btn, .label, .badge, .alert-message { border-color: ButtonText; }
+}
